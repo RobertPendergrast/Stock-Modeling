@@ -1,27 +1,24 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from alpha_vantage.timeseries import TimeSeries
+import yfinance as yf
+from datetime import datetime
 
-# Replace 'YOUR_API_KEY' with your actual Alpha Vantage API key
-API_KEY = 'WU51YMKHTXAS05CY'
+current_date = datetime.now()
+formatted_date = current_date.strftime('%Y-%m-%d')
 
-# Set up the TimeSeries object
-ts = TimeSeries(key=API_KEY, output_format='pandas')
+start = '2012-01-01'
+stop = formatted_date
+stocks = ['META','IMB','AAPL']
 
-# Specify the symbol and interval for the time series data
-symbol = 'IBM'
-interval = '5min'
+for stock in stocks:
+    data = yf.download(stock, start, stop)
+    print(data.head())
 
-# Get the intraday time series data
-data, meta_data = ts.get_intraday(symbol=symbol, interval=interval, outputsize='full')
-
-# Print a sample of the data
-print(data.head(3))
-
-# Plot the closing prices
-data['4. close'].plot()
-plt.title(f'Intraday Stock Prices for {symbol}')
-plt.xlabel('Time')
-plt.ylabel('Closing Price')
-plt.show()
+    plt.figure(figsize=(12, 6))
+    plt.plot(data['Close'])
+    plt.title(f'Stock Prices for {stock}')
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price')
+    plt.grid(True)
+    plt.show()
