@@ -9,10 +9,11 @@ formatted_date = current_date.strftime('%Y-%m-%d')
 
 start = '2012-01-01'
 stop = formatted_date
-stocks = ['META','IMB','AAPL']
+stocks = ['META','IMB','AAPL','GOOG','TSLA']
 
 for stock in stocks:
     data = yf.download(stock, start, stop)
+    print(stock)
     print(data.head())
 
     plt.figure(figsize=(12, 6))
